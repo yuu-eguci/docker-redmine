@@ -251,7 +251,7 @@ redmine_check_database_connection() {
   echo
 }
 
-redmine_check_mysql_database_tx_isolation() {
+redmine_check_mysql_database_transaction_isolation() {
   # Print warning if transaction isolation level in mysql is not READ-COMMITTED, which is required to avoid race conditions
   # https://www.redmine.org/projects/redmine/wiki/MySQL_configuration
   if [[ ${DB_ADAPTER} == mysql2 ]]; then
@@ -262,7 +262,7 @@ redmine_check_mysql_database_tx_isolation() {
           --skip-column-names \
           --silent "
     isolation_lvl=$( MYSQL_PWD="${DB_PASS}" $mysql_cmd \
-          --execute="SELECT @@GLOBAL.tx_isolation;" )
+          --execute="SELECT @@GLOBAL.transaction_isolation;" )
     
     if [[ $? -ne 0 ]]; then
       # try the new name of the variable, mysql 8+
@@ -308,7 +308,7 @@ redmine_configure_database() {
     exec_as_redmine sed -i "/reconnect: /d" ${REDMINE_DATABASE_CONFIG}
   fi
 
-  redmine_check_mysql_database_tx_isolation
+  redmine_check_mysql_database_transaction_isolation
 }
 
 redmine_finalize_memcached_parameters() {
