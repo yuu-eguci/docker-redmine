@@ -2,3 +2,6 @@
 *.tar.gz
 *.gem
 node_modules
+srv
+.DS_Store
+.env
